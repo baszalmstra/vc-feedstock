@@ -295,7 +295,7 @@ outputs:
           - ucrt >=10.0.20348.0  # [(vsver >=17 or (vsver == 16 and update_version >= 10)) and (cross_target_platform == "win-64" or cross_target_platform == "win-32")]
     requirements:
       run:
-        - vs{{ vsyear }}_{{ cross_target_platform }} {{ cl_version }}
+        - vs{{ vsyear }}_{{ cross_target_platform }} {{ cl_version }}.*
     test:
       commands:
         - echo "%CMAKE_GENERATOR%"
@@ -311,7 +311,7 @@ outputs:
         - 'if not "%FOUND_CLANG_VERSION%"=="{{ clang_test_version }}" exit /b 1'  # [win]
       requires:
         # intentionally unactivated; testing to find our clang before the one from the image
-        - clang {{ clang_test_version }}
+        - clang {{ clang_test_version }}.*
       {% endif %}
     about:
       summary: >-
