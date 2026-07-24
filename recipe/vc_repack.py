@@ -133,6 +133,26 @@ def get_target_processor(target_platform):
     raise ValueError(f"Unknown target_platform {target_platform}")
 
 
+def get_meson_cpu_family(target_platform):
+    if target_platform == "win-32":
+        return "x86"
+    elif target_platform == "win-64":
+        return "x86_64"
+    elif target_platform == "win-arm64":
+        return "aarch64"
+    raise ValueError(f"Unknown target_platform {target_platform}")
+
+
+def get_meson_cpu(target_platform):
+    if target_platform == "win-32":
+        return "i686"
+    elif target_platform == "win-64":
+        return "x86_64"
+    elif target_platform == "win-arm64":
+        return "aarch64"
+    raise ValueError(f"Unknown target_platform {target_platform}")
+
+
 def subs(line, args):
     t = AtTemplate(line)
     d = {
@@ -151,6 +171,8 @@ def subs(line, args):
         "vcvarsbat": get_vcvarsbat(args.target_platform, args.host_platform),
         "vc_component": get_vc_component(args),
         "vc_component_name": get_vc_component_name(args),
+        "meson_cpu_family": get_meson_cpu_family(args.target_platform),
+        "meson_cpu": get_meson_cpu(args.target_platform),
     }
     return t.substitute(d)
 
