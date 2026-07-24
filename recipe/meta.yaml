@@ -21,7 +21,7 @@
 
 {% set clang_test_version = "21.1.8" %}
 
-{% set build_num = 39 %}
+{% set build_num = 40 %}
 
 package:
   name: vs{{ vsyear }}
