@@ -413,11 +413,15 @@ def unpack_exe(exe_filename, env, version):
                     os.path.join(cabdir1, payload["licence"]),
                     os.path.join(env.src_dir, "LICENSE.RTF"),
                 )
+                with open(os.path.join(env.src_dir, "LICENSE.DOCX"), "w") as f:
+                    f.write("See LICENSE.RTF for the full license text.\n")
             elif payload["license_url"] is not None:
                 fetch_license_docx(
                     payload["license_url"],
                     os.path.join(env.src_dir, "LICENSE.DOCX"),
                 )
+                with open(os.path.join(env.src_dir, "LICENSE.RTF"), "w") as f:
+                    f.write("See LICENSE.DOCX for the full license text.\n")
             else:
                 raise RuntimeError(
                     "Installer contains no embedded licence file and no licence URL; "
