@@ -111,6 +111,13 @@ IF "%CONDA_BUILD%" == "1" (
   set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% -DPython_FIND_REGISTRY=NEVER -DPython3_FIND_REGISTRY=NEVER -DCMAKE_PROGRAM_PATH=%BUILD_PREFIX%\bin;%BUILD_PREFIX%\Scripts;%BUILD_PREFIX%\Library\bin;%PREFIX%\bin;%PREFIX%\Scripts;%PREFIX%\Library\bin"
   set "MESON_ARGS=%MESON_ARGS% --prefix=%LIBRARY_PREFIX% --pkg-config-path=%LIBRARY_LIB%\pkgconfig;%LIBRARY_PREFIX%\share\pkgconfig -Dlibdir=lib"
 )
+IF "%CONDA_BUILD%" == "1" (
+  :: use conda-forge Python version even if the system Python is newer
+  :: see https://github.com/conda-forge/cmake-feedstock/issues/196
+  IF EXIST %PREFIX%/python.exe (
+    set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_POLICY_DEFAULT_CMP0094=NEW"
+  )
+)
 
 :: set CMAKE_* variables
 :: platform selection changed with VS 16 2019, but for compatibility we keep the older way
