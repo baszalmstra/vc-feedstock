@@ -109,7 +109,7 @@ set "MESON_ARGS=-Dbuildtype=release"
 IF "%CONDA_BUILD%" == "1" (
   :: for -DPython_FIND_REGISTRY see https://github.com/conda-forge/conda-smithy/issues/2319
   :: for -DPython*_FIND_STRATEGY see https://github.com/conda-forge/cmake-feedstock/issues/196
-  set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% -DPython_FIND_REGISTRY=NEVER -DPython3_FIND_REGISTRY=NEVER -DCMAKE_PROGRAM_PATH=%BUILD_PREFIX%\bin;%BUILD_PREFIX%\Scripts;%BUILD_PREFIX%\Library\bin;%PREFIX%\bin;%PREFIX%\Scripts;%PREFIX%\Library\bin -DPython_FIND_STRATEGY=LOCATION -DPython3_FIND_STRATEGY=LOCATION"
+  set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% -DPython_FIND_REGISTRY=NEVER -DPython3_FIND_REGISTRY=NEVER -DCMAKE_PROGRAM_PATH=%BUILD_PREFIX%\bin;%BUILD_PREFIX%\Scripts;%BUILD_PREFIX%\Library\bin;%PREFIX%\bin;%PREFIX%\Scripts;%PREFIX%\Library\bin -DCMAKE_POLICY_DEFAULT_CMP0094=NEW"
   set "MESON_ARGS=%MESON_ARGS% --prefix=%LIBRARY_PREFIX% --pkg-config-path=%LIBRARY_LIB%\pkgconfig;%LIBRARY_PREFIX%\share\pkgconfig -Dlibdir=lib"
 )
 
