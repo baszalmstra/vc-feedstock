@@ -35,7 +35,7 @@ Home: https://visualstudio.microsoft.com/downloads/
 
 Package license: LicenseRef-MicrosoftVisualCpp2015-2022Runtime
 
-Summary: MSVC runtimes associated with cl.exe version 19.51.36231 (VS 2026 update 1)
+Summary: MSVC runtimes associated with cl.exe version 19.51.36247 (VS 2026 update 1)
 
 About vcomp14
 -------------
@@ -44,7 +44,7 @@ Home: https://visualstudio.microsoft.com/downloads/
 
 Package license: LicenseRef-MicrosoftVisualCpp2015-2022Runtime
 
-Summary: MSVC OpenMP runtime associated with cl.exe version 19.51.36231 (VS 2026 update 1)
+Summary: MSVC OpenMP runtime associated with cl.exe version 19.51.36247 (VS 2026 update 1)
 
 About vs2015_runtime
 --------------------
@@ -122,7 +122,14 @@ Current build status
 ====================
 
 
-<table>
+<table><tr>
+    <td>GitHub Actions</td>
+    <td>
+      <a href="https://github.com/conda-forge/vc-feedstock/actions/workflows/conda-build.yml">
+        <img src="https://github.com/conda-forge/vc-feedstock/actions/workflows/conda-build.yml/badge.svg?event=push&branch=main">
+      </a>
+    </td>
+  </tr>
     
   <tr>
     <td>Azure</td>
@@ -157,52 +164,17 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cl_version19.51.36231cross_target_platformwin-64runtime_version14.51.36231sha25690E48ADE404E4576D023ABFA374F323555F233982A8805EA9AC63DCA9491A16Bupdate_version1uuidc1bd4f2c-3672_h7528ba2c</td>
+              <td>win_64_cl_version19.51.36247cross_target_platformwin-64runtime_version14.51.36247sha256843068991DAAA1F73AD9F6239BCE4D0F6A07A51F18C37EA2A867E9BECA71295Cupdate_version1uuidebdab8e5-1d7b_hc0c8fc65</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=3629&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/vc-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cl_version19.51.36231cross_target_platformwin-64runtime_version14.51.36231sha25690E48ADE404E4576D023ABFA374F323555F233982A8805EA9AC63DCA9491A16Bupdate_version1uuidc1bd4f2c-3672_h7528ba2c" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/vc-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cl_version19.51.36247cross_target_platformwin-64runtime_version14.51.36247sha256843068991DAAA1F73AD9F6239BCE4D0F6A07A51F18C37EA2A867E9BECA71295Cupdate_version1uuidebdab8e5-1d7b_hc0c8fc65" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cl_version19.51.36231cross_target_platformwin-arm64runtime_version14.51.36231sha256E912E9E653A5295A382BF86521F9B852AEECA823F4A9BF10BB2FBA7DD9445288update_version1uuid0dd156af-8_heb59edae</td>
+              <td>win_64_cl_version19.51.36247cross_target_platformwin-arm64runtime_version14.51.36247sha256B70EF586669A620A0A30A1156969C05C6A3831DC8F8BC992DA75779D2A92F944update_version1uuidddfd326a-0_h6107cf24</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=3629&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/vc-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cl_version19.51.36231cross_target_platformwin-arm64runtime_version14.51.36231sha256E912E9E653A5295A382BF86521F9B852AEECA823F4A9BF10BB2FBA7DD9445288update_version1uuid0dd156af-8_heb59edae" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>win_arm64_cl_version19.29.30139cross_target_platformwin-64runtime_version14.29.30139sha256296F96CD102250636BCD23AB6E6CF70935337B1BBB3507FE8521D8D9CFAA932Fupdate_version11uuidb929b7fe-_hea466f03</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=3629&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/vc-feedstock?branchName=main&jobName=win&configuration=win%20win_arm64_cl_version19.29.30139cross_target_platformwin-64runtime_version14.29.30139sha256296F96CD102250636BCD23AB6E6CF70935337B1BBB3507FE8521D8D9CFAA932Fupdate_version11uuidb929b7fe-_hea466f03" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>win_arm64_cl_version19.44.35207cross_target_platformwin-64runtime_version14.44.35208sha256D62841375B90782B1829483AC75695CCEF680A8F13E7DE569B992EF33C6CD14Aupdate_version14uuid40b59c73-_h369391eb</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=3629&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/vc-feedstock?branchName=main&jobName=win&configuration=win%20win_arm64_cl_version19.44.35207cross_target_platformwin-64runtime_version14.44.35208sha256D62841375B90782B1829483AC75695CCEF680A8F13E7DE569B992EF33C6CD14Aupdate_version14uuid40b59c73-_h369391eb" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>win_arm64_cl_version19.44.35207cross_target_platformwin-arm64runtime_version14.44.35208sha2561DB5C25643A3A4E4C99BFD0D0931A702A49C73DADC4B30672687F32188C1724Cupdate_version14uuid40b59c_hb89f60bd</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=3629&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/vc-feedstock?branchName=main&jobName=win&configuration=win%20win_arm64_cl_version19.44.35207cross_target_platformwin-arm64runtime_version14.44.35208sha2561DB5C25643A3A4E4C99BFD0D0931A702A49C73DADC4B30672687F32188C1724Cupdate_version14uuid40b59c_hb89f60bd" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>win_arm64_cl_version19.51.36231cross_target_platformwin-64runtime_version14.51.36231sha25690E48ADE404E4576D023ABFA374F323555F233982A8805EA9AC63DCA9491A16Bupdate_version1uuidc1bd4f2c-3_h096b8484</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=3629&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/vc-feedstock?branchName=main&jobName=win&configuration=win%20win_arm64_cl_version19.51.36231cross_target_platformwin-64runtime_version14.51.36231sha25690E48ADE404E4576D023ABFA374F323555F233982A8805EA9AC63DCA9491A16Bupdate_version1uuidc1bd4f2c-3_h096b8484" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>win_arm64_cl_version19.51.36231cross_target_platformwin-arm64runtime_version14.51.36231sha256E912E9E653A5295A382BF86521F9B852AEECA823F4A9BF10BB2FBA7DD9445288update_version1uuid0dd156a_h2b1107f0</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=3629&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/vc-feedstock?branchName=main&jobName=win&configuration=win%20win_arm64_cl_version19.51.36231cross_target_platformwin-arm64runtime_version14.51.36231sha256E912E9E653A5295A382BF86521F9B852AEECA823F4A9BF10BB2FBA7DD9445288update_version1uuid0dd156a_h2b1107f0" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/vc-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cl_version19.51.36247cross_target_platformwin-arm64runtime_version14.51.36247sha256B70EF586669A620A0A30A1156969C05C6A3831DC8F8BC992DA75779D2A92F944update_version1uuidddfd326a-0_h6107cf24" alt="variant">
                 </a>
               </td>
             </tr>
