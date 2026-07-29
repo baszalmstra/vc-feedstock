@@ -2,11 +2,14 @@ import argparse
 import copy
 import json
 import os
+import re
 import shutil
 import string
 import subprocess
 import sys
 import tempfile
+import urllib.parse
+import urllib.request
 import xml.dom.minidom
 from glob import glob
 
@@ -133,6 +136,26 @@ def get_target_processor(target_platform):
     raise ValueError(f"Unknown target_platform {target_platform}")
 
 
+def get_meson_cpu_family(target_platform):
+    if target_platform == "win-32":
+        return "x86"
+    elif target_platform == "win-64":
+        return "x86_64"
+    elif target_platform == "win-arm64":
+        return "aarch64"
+    raise ValueError(f"Unknown target_platform {target_platform}")
+
+
+def get_meson_cpu(target_platform):
+    if target_platform == "win-32":
+        return "i686"
+    elif target_platform == "win-64":
+        return "x86_64"
+    elif target_platform == "win-arm64":
+        return "aarch64"
+    raise ValueError(f"Unknown target_platform {target_platform}")
+
+
 def subs(line, args):
     t = AtTemplate(line)
     d = {
@@ -151,6 +174,8 @@ def subs(line, args):
         "vcvarsbat": get_vcvarsbat(args.target_platform, args.host_platform),
         "vc_component": get_vc_component(args),
         "vc_component_name": get_vc_component_name(args),
+        "meson_cpu_family": get_meson_cpu_family(args.target_platform),
+        "meson_cpu": get_meson_cpu(args.target_platform),
     }
     return t.substitute(d)
 
@@ -243,10 +268,7 @@ def decode_manifest(directory):
         for x in files
         if x["FilePath"].value.lower().startswith("license")
     ]
-    if len(licences) == 0:
-        paths = [x["FilePath"].value for x in files]
-        raise RuntimeError(f"Found no licences in the manifest; not present in {paths}")
-    elif len(licences) > 1:
+    if len(licences) > 1:
         paths = [x["FilePath"].value for x in licences]
         raise RuntimeError(f"Found more than one licence in the manifest: {paths}")
 
@@ -278,9 +300,29 @@ def decode_manifest(directory):
     elif len(runtimes) > 1:
         raise RuntimeError("Found more than one match in the manfiest")
 
+    # Newer installers omit the embedded RTF payload and instead provide a URL. The URL is
+    # stored in BootstrapperApplicationData.xml. The file-to-u-name mapping is given by the
+    # SourcePath attribute on each <Payload> element in the manifest.
+    license_url = None
+    if not licences:
+        ba_data = next(
+            (x.attributes for x in payloads
+             if "FilePath" in x.attributes
+             and os.path.basename(x.attributes["FilePath"].value) == "BootstrapperApplicationData.xml"
+             and "SourcePath" in x.attributes),
+            None,
+        )
+        if ba_data:
+            ba_path = os.path.join(directory, ba_data["SourcePath"].value)
+            ba_dom = xml.dom.minidom.parse(ba_path)
+            nodes = ba_dom.getElementsByTagName("WixStdbaInformation")
+            if nodes:
+                license_url = nodes[0].getAttribute("LicenseUrl") or None
+
     return dict(
         cabfile=runtimes[0]["SourcePath"].value,
-        licence=licences[0]["SourcePath"].value,
+        licence=licences[0]["SourcePath"].value if licences else None,
+        license_url=license_url,
         version=version,
     )
 
@@ -332,6 +374,26 @@ def copy_runtime(env):
         shutil.copyfile(fname, os.path.join(env.prefix, fname))
     os.chdir(cwd)
 
+def fetch_license_docx(license_page_url, dest_path):
+    # The license page (e.g. https://aka.ms/VCRedistLicense) embeds the document
+    # in an Office Online viewer iframe.  Follow the redirect to the HTML page,
+    # extract the direct .docx URL from the iframe src, and download it.
+    with urllib.request.urlopen(license_page_url) as resp:
+        html = resp.read().decode("utf-8", errors="replace")
+    match = re.search(
+        r"view\.officeapps\.live\.com/op/embed\.aspx\?src=([^\"&]+)", html
+    )
+    if not match:
+        raise RuntimeError(
+            f"Could not find license document link on {license_page_url}"
+        )
+    docx_url = urllib.parse.unquote(match.group(1))
+    print(f"Fetching license document from {docx_url}")
+    with urllib.request.urlopen(docx_url) as resp:
+        with open(dest_path, "wb") as f:
+            f.write(resp.read())
+
+
 def unpack_exe(exe_filename, env, version):
     with tempfile.TemporaryDirectory() as tmpdir:
         cabs = split_self_extract_exe(exe_filename, tmpdir)
@@ -346,10 +408,25 @@ def unpack_exe(exe_filename, env, version):
                     raise RuntimeError(
                         f"Wanted version {version}, found {short_version}"
                     )
-            shutil.copyfile(
-                os.path.join(cabdir1, payload["licence"]),
-                os.path.join(env.src_dir, "LICENSE.RTF"),
-            )
+            if payload["licence"] is not None:
+                shutil.copyfile(
+                    os.path.join(cabdir1, payload["licence"]),
+                    os.path.join(env.src_dir, "LICENSE.RTF"),
+                )
+                with open(os.path.join(env.src_dir, "LICENSE.DOCX"), "w") as f:
+                    f.write("See LICENSE.RTF for the full license text.\n")
+            elif payload["license_url"] is not None:
+                fetch_license_docx(
+                    payload["license_url"],
+                    os.path.join(env.src_dir, "LICENSE.DOCX"),
+                )
+                with open(os.path.join(env.src_dir, "LICENSE.RTF"), "w") as f:
+                    f.write("See LICENSE.DOCX for the full license text.\n")
+            else:
+                raise RuntimeError(
+                    "Installer contains no embedded licence file and no licence URL; "
+                    "cannot determine the correct licence to include"
+                )
 
         with tempfile.TemporaryDirectory() as cabdir2:
             unpack_cab(os.path.join(tmpdir, cabs[1]), cabdir2, env)

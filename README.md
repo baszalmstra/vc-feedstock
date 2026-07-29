@@ -35,7 +35,7 @@ Home: https://visualstudio.microsoft.com/downloads/
 
 Package license: LicenseRef-MicrosoftVisualCpp2015-2022Runtime
 
-Summary: MSVC runtimes associated with cl.exe version 19.51.36231 (VS 2026 update 1)
+Summary: MSVC runtimes associated with cl.exe version 19.51.36247 (VS 2026 update 1)
 
 About vcomp14
 -------------
@@ -44,7 +44,7 @@ Home: https://visualstudio.microsoft.com/downloads/
 
 Package license: LicenseRef-MicrosoftVisualCpp2015-2022Runtime
 
-Summary: MSVC OpenMP runtime associated with cl.exe version 19.51.36231 (VS 2026 update 1)
+Summary: MSVC OpenMP runtime associated with cl.exe version 19.51.36247 (VS 2026 update 1)
 
 About vs2015_runtime
 --------------------
@@ -164,17 +164,17 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cl_version19.51.36231cross_target_platformwin-64runtime_version14.51.36231sha256E912E9E653A5295A382BF86521F9B852AEECA823F4A9BF10BB2FBA7DD9445288update_version1uuid0dd156af-82aa_h0c56104b</td>
+              <td>win_64_cl_version19.51.36247cross_target_platformwin-64runtime_version14.51.36247sha256843068991DAAA1F73AD9F6239BCE4D0F6A07A51F18C37EA2A867E9BECA71295Cupdate_version1uuidebdab8e5-1d7b_hc0c8fc65</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=3629&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/vc-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cl_version19.51.36231cross_target_platformwin-64runtime_version14.51.36231sha256E912E9E653A5295A382BF86521F9B852AEECA823F4A9BF10BB2FBA7DD9445288update_version1uuid0dd156af-82aa_h0c56104b" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/vc-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cl_version19.51.36247cross_target_platformwin-64runtime_version14.51.36247sha256843068991DAAA1F73AD9F6239BCE4D0F6A07A51F18C37EA2A867E9BECA71295Cupdate_version1uuidebdab8e5-1d7b_hc0c8fc65" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64_cl_version19.51.36231cross_target_platformwin-arm64runtime_version14.51.36231sha25690E48ADE404E4576D023ABFA374F323555F233982A8805EA9AC63DCA9491A16Bupdate_version1uuidc1bd4f2c-3_h2b173ce5</td>
+              <td>win_64_cl_version19.51.36247cross_target_platformwin-arm64runtime_version14.51.36247sha256B70EF586669A620A0A30A1156969C05C6A3831DC8F8BC992DA75779D2A92F944update_version1uuidddfd326a-0_h6107cf24</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=3629&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/vc-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cl_version19.51.36231cross_target_platformwin-arm64runtime_version14.51.36231sha25690E48ADE404E4576D023ABFA374F323555F233982A8805EA9AC63DCA9491A16Bupdate_version1uuidc1bd4f2c-3_h2b173ce5" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/vc-feedstock?branchName=main&jobName=win&configuration=win%20win_64_cl_version19.51.36247cross_target_platformwin-arm64runtime_version14.51.36247sha256B70EF586669A620A0A30A1156969C05C6A3831DC8F8BC992DA75779D2A92F944update_version1uuidddfd326a-0_h6107cf24" alt="variant">
                 </a>
               </td>
             </tr>

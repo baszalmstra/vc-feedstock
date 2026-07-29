@@ -210,6 +210,19 @@ IF NOT "@{target_platform}" == "@{host_platform}" (
   call :ReplaceInTargetVariable "%CONDA_PREFIX%/Library/lib;%LIB%" LIB_FOR_BUILD
   call :ReplaceInTargetVariable "%CONDA_PREFIX%/Library/include;%INCLUDE%" INCLUDE_FOR_BUILD
   set "LDFLAGS_FOR_BUILD=%LDFLAGS% /MACHINE:@{host_msbuild_plat}"
+  echo [binaries]>"%CONDA_PREFIX%\meson_cross_file.txt"
+  echo ar = 'lib'>>"%CONDA_PREFIX%\meson_cross_file.txt"
+  echo windres = 'rc'>>"%CONDA_PREFIX%\meson_cross_file.txt"
+  echo.>>"%CONDA_PREFIX%\meson_cross_file.txt"
+  echo [host_machine]>>"%CONDA_PREFIX%\meson_cross_file.txt"
+  echo system = 'windows'>>"%CONDA_PREFIX%\meson_cross_file.txt"
+  echo cpu_family = '@{meson_cpu_family}'>>"%CONDA_PREFIX%\meson_cross_file.txt"
+  echo cpu = '@{meson_cpu}'>>"%CONDA_PREFIX%\meson_cross_file.txt"
+  echo endian = 'little'>>"%CONDA_PREFIX%\meson_cross_file.txt"
+  echo.>>"%CONDA_PREFIX%\meson_cross_file.txt"
+  echo [properties]>>"%CONDA_PREFIX%\meson_cross_file.txt"
+  echo needs_exe_wrapper = true>>"%CONDA_PREFIX%\meson_cross_file.txt"
+  set "MESON_ARGS=%MESON_ARGS% --cross-file=%CONDA_PREFIX%\meson_cross_file.txt"
 ) else (
   set "CONDA_BUILD_CROSS_COMPILATION=0"
 )
