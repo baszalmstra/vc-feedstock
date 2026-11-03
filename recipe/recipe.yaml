@@ -21,6 +21,8 @@ context:
   vcvars_ver: ${{ vcvars_ver_maj }}.${{ vcvars_ver_min }}
   # Need ucrt for windows<10 and when the VC runtime does not bundle it
   needs_ucrt: ${{ (vsver | int >= 17 or (vsver | int == 16 and update_version | int >= 10)) and cross_target_platform == "win-64" }}
+  # Architecture suffix of the vc_redist.<arch>.exe installer
+  redist_arch: ${{ "arm64" if cross_target_platform == "win-arm64" else "x64" }}
 
 recipe:
   name: vc-feedstock
@@ -42,16 +44,9 @@ outputs:
   - staging:
       name: vc-stage
     source:
-      - if: cross_target_platform == "win-64"
-        then:
-          # Latest version redirect: https://aka.ms/vs/16/release/vc_redist.x64.exe
-          url: https://download.visualstudio.microsoft.com/download/pr/${{ uuid }}/${{ sha256 }}/vc_redist.x64.exe
-          sha256: ${{ sha256 | lower }}
-      - if: cross_target_platform == "win-arm64"
-        then:
-          # Latest version redirect: https://aka.ms/vs/16/release/vc_redist.arm64.exe
-          url: https://download.visualstudio.microsoft.com/download/pr/${{ uuid }}/${{ sha256 }}/vc_redist.arm64.exe
-          sha256: ${{ sha256 | lower }}
+      # Latest version redirect: https://aka.ms/vs/16/release/vc_redist.${{ redist_arch }}.exe
+      url: https://download.visualstudio.microsoft.com/download/pr/${{ uuid }}/${{ sha256 }}/vc_redist.${{ redist_arch }}.exe
+      sha256: ${{ sha256 | lower }}
     build:
       script:
         - python "${{ RECIPE_DIR }}/vc_repack.py" --extract --runtime-version ${{ runtime_version }} --target-platform ${{ cross_target_platform }}
