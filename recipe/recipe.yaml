@@ -20,7 +20,7 @@ context:
   vcvars_ver_min: ${{ (cl_version | split(".")) [1] | int }}
   vcvars_ver: ${{ vcvars_ver_maj }}.${{ vcvars_ver_min }}
   # Need ucrt for windows<10 and when the VC runtime does not bundle it
-  needs_ucrt: ${{ (vsver | int >= 17 or (vsver | int == 16 and update_version | int >= 10)) and (cross_target_platform == "win-64" or cross_target_platform == "win-32") }}
+  needs_ucrt: ${{ (vsver | int >= 17 or (vsver | int == 16 and update_version | int >= 10)) and cross_target_platform == "win-64" }}
 
 recipe:
   name: vc-feedstock
@@ -52,11 +52,6 @@ outputs:
           # Latest version redirect: https://aka.ms/vs/16/release/vc_redist.arm64.exe
           url: https://download.visualstudio.microsoft.com/download/pr/${{ uuid }}/${{ sha256 }}/vc_redist.arm64.exe
           sha256: ${{ sha256 | lower }}
-      - if: cross_target_platform == "win-32"
-        then:
-          # Latest version redirect: https://aka.ms/vs/16/release/vc_redist.x86.exe
-          url: https://download.visualstudio.microsoft.com/download/pr/${{ uuid }}/${{ sha256 }}/vc_redist.x86.exe
-          sha256: ${{ sha256 | lower }}
     build:
       script:
         - python "${{ RECIPE_DIR }}/vc_repack.py" --extract --runtime-version ${{ runtime_version }} --target-platform ${{ cross_target_platform }}
@@ -64,7 +59,7 @@ outputs:
         - python "${{ RECIPE_DIR }}/vc_repack.py" --install-runtime
     requirements:
       build:
-        - if: build_platform == "win-64" or build_platform == "win-32" or build_platform == "win-arm64"
+        - if: build_platform == "win-64" or build_platform == "win-arm64"
           then: m2-p7zip <10
           else: p7zip
         - python *
@@ -93,7 +88,7 @@ outputs:
         strong:
           - ${{ pin_subpackage("vcomp" ~ vc_major, upper_bound=None) }}
       run_constraints:
-        - if: cross_target_platform == "win-64" or cross_target_platform == "win-32"
+        - if: cross_target_platform == "win-64"
           then: vs${{ runtime_year }}_runtime ${{ runtime_version }}.* *_${{ build_num }}
     tests:
       # package_contents inspects the built archive, so unlike script tests it
@@ -149,7 +144,7 @@ outputs:
         - if: needs_ucrt
           then: ucrt >=10.0.20348.0
       run_constraints:
-        - if: cross_target_platform == "win-64" or cross_target_platform == "win-32"
+        - if: cross_target_platform == "win-64"
           then: vs${{ runtime_year }}_runtime ${{ runtime_version }}.* *_${{ build_num }}
     tests:
       # Only the DLLs this package ships. The api-ms-win-* and ucrtbase.dll
