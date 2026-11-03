@@ -96,9 +96,15 @@ outputs:
         - if: cross_target_platform == "win-64" or cross_target_platform == "win-32"
           then: vs${{ runtime_year }}_runtime ${{ runtime_version }}.* *_${{ build_num }}
     tests:
-      - script:
-          - if not exist %LIBRARY_BIN%\vcomp140.dll exit 1
-          - if not exist %PREFIX%\vcomp140.dll exit 1
+      # package_contents inspects the built archive, so unlike script tests it
+      # also runs for the cross-built win-arm64 packages.
+      - package_contents:
+          # %LIBRARY_BIN%
+          bin:
+            - vcomp140.dll
+          # %PREFIX%
+          files:
+            - vcomp140.dll
     about:
       summary: >-
         MSVC OpenMP runtime associated with cl.exe version ${{ cl_version }}
@@ -146,72 +152,41 @@ outputs:
         - if: cross_target_platform == "win-64" or cross_target_platform == "win-32"
           then: vs${{ runtime_year }}_runtime ${{ runtime_version }}.* *_${{ build_num }}
     tests:
-      - script:
-          - dir %PREFIX%\Library\bin\*.dll
-          - >-
-            for %%d in (
-            api-ms-win-core-console-l1-1-0.dll
-            api-ms-win-core-datetime-l1-1-0.dll
-            api-ms-win-core-debug-l1-1-0.dll
-            api-ms-win-core-errorhandling-l1-1-0.dll
-            api-ms-win-core-file-l1-1-0.dll
-            api-ms-win-core-file-l1-2-0.dll
-            api-ms-win-core-file-l2-1-0.dll
-            api-ms-win-core-handle-l1-1-0.dll
-            api-ms-win-core-heap-l1-1-0.dll
-            api-ms-win-core-interlocked-l1-1-0.dll
-            api-ms-win-core-libraryloader-l1-1-0.dll
-            api-ms-win-core-localization-l1-2-0.dll
-            api-ms-win-core-memory-l1-1-0.dll
-            api-ms-win-core-namedpipe-l1-1-0.dll
-            api-ms-win-core-processenvironment-l1-1-0.dll
-            api-ms-win-core-processthreads-l1-1-0.dll
-            api-ms-win-core-processthreads-l1-1-1.dll
-            api-ms-win-core-profile-l1-1-0.dll
-            api-ms-win-core-rtlsupport-l1-1-0.dll
-            api-ms-win-core-string-l1-1-0.dll
-            api-ms-win-core-synch-l1-1-0.dll
-            api-ms-win-core-synch-l1-2-0.dll
-            api-ms-win-core-sysinfo-l1-1-0.dll
-            api-ms-win-core-timezone-l1-1-0.dll
-            api-ms-win-core-util-l1-1-0.dll
-            api-ms-win-crt-conio-l1-1-0.dll
-            api-ms-win-crt-convert-l1-1-0.dll
-            api-ms-win-crt-environment-l1-1-0.dll
-            api-ms-win-crt-filesystem-l1-1-0.dll
-            api-ms-win-crt-heap-l1-1-0.dll
-            api-ms-win-crt-locale-l1-1-0.dll
-            api-ms-win-crt-math-l1-1-0.dll
-            api-ms-win-crt-multibyte-l1-1-0.dll
-            api-ms-win-crt-private-l1-1-0.dll
-            api-ms-win-crt-process-l1-1-0.dll
-            api-ms-win-crt-runtime-l1-1-0.dll
-            api-ms-win-crt-stdio-l1-1-0.dll
-            api-ms-win-crt-string-l1-1-0.dll
-            api-ms-win-crt-time-l1-1-0.dll
-            api-ms-win-crt-utility-l1-1-0.dll
-            concrt140.dll
-            msvcp140_1.dll
-            msvcp140_2.dll
-            msvcp140.dll
-            ucrtbase.dll
-            vcamp140.dll
-            vccorlib140.dll
-            vcomp140.dll
-            vcruntime140.dll
-            ) do (if not exist %LIBRARY_BIN%\%%d exit 1) & (if not exist %PREFIX%\%%d exit 1)
-          - if: vsyear | int >= 2019
-            then: >-
-              for %%d in (
-              msvcp140_atomic_wait.dll
-              msvcp140_codecvt_ids.dll
-              vcruntime140_1.dll
-              ) do (if not exist %LIBRARY_BIN%\%%d exit 1) & (if not exist %PREFIX%\%%d exit 1)
-          - if: vsyear | int >= 2022
-            then: >-
-              for %%d in (
-              vcruntime140_threads.dll
-              ) do (if not exist %LIBRARY_BIN%\%%d exit 1) & (if not exist %PREFIX%\%%d exit 1)
+      # Only the DLLs this package ships. The api-ms-win-* and ucrtbase.dll
+      # files come from the ucrt run dependency, and vcomp140.dll from vcomp<X>.
+      - package_contents:
+          bin:
+            - concrt140.dll
+            - msvcp140_1.dll
+            - msvcp140_2.dll
+            - msvcp140.dll
+            - vcamp140.dll
+            - vccorlib140.dll
+            - vcruntime140.dll
+            - if: vsyear | int >= 2019
+              then:
+                - msvcp140_atomic_wait.dll
+                - msvcp140_codecvt_ids.dll
+                - vcruntime140_1.dll
+            - if: vsyear | int >= 2022
+              then:
+                - vcruntime140_threads.dll
+          files:
+            - concrt140.dll
+            - msvcp140_1.dll
+            - msvcp140_2.dll
+            - msvcp140.dll
+            - vcamp140.dll
+            - vccorlib140.dll
+            - vcruntime140.dll
+            - if: vsyear | int >= 2019
+              then:
+                - msvcp140_atomic_wait.dll
+                - msvcp140_codecvt_ids.dll
+                - vcruntime140_1.dll
+            - if: vsyear | int >= 2022
+              then:
+                - vcruntime140_threads.dll
     about:
       summary: >-
         MSVC runtimes associated with cl.exe version ${{ cl_version }}
